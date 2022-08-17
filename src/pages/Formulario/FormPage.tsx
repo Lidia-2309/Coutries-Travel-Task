@@ -1,4 +1,5 @@
 import './PageForm.css'
+import MaskedInput from '../../components/MaskedInput/masked';
 
 export const FormPage = () => {
     return (
@@ -31,6 +32,11 @@ export const FormPage = () => {
                     className="form-control" 
                     id="exampleInputPassword1"
                     required/>
+                </div>
+                <div className="CPF">
+                <label htmlFor="CPF" 
+                    className="form-label">CPF</label>
+                    <MaskedInput/>
                 </div>
                 <button type="submit" className="btn btn-primary">Enviar</button>
             </form>
