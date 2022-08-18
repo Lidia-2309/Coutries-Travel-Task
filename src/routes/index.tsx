@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect, Link, useRouteMatch, useParams } from 'react-router-dom';
 import { Home } from '../pages/Home';
 import { FormPage } from '../pages/Formulario';
 import { Paises } from '../pages/Lista_Paises';
