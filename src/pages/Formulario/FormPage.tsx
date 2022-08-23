@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import './PageForm.css'
 import MaskedInput from '../../components/MaskedInput/masked';
 import { Link } from 'react-router-dom'
+import { isValidInputTimeValue } from '@testing-library/user-event/dist/utils';
+import CountrySelect from '../../components/graphql';
 
 interface Formulario {
     name: string;
@@ -10,7 +12,9 @@ interface Formulario {
 }
 
 export const FormPage = () => {
-    
+
+    //USESTATE
+
     const [formState, setFormState] = useState<Formulario>({
         name: "",
         email: "",
@@ -80,6 +84,10 @@ export const FormPage = () => {
                 <label htmlFor="CPF" 
                     className="form-label">CPF</label>
                     <MaskedInput/>
+                </div>
+
+                <div className="select">
+                    <CountrySelect/>
                 </div>
                 
                 <button type="submit" className="btn btn-primary">Enviar</button>
