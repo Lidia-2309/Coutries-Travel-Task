@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import './PageForm.css'
-import MaskedInput from '../../components/MaskedInput/masked';
-import { Link } from 'react-router-dom'
-import { isValidInputTimeValue } from '@testing-library/user-event/dist/utils';
 import CountrySelect from '../../components/graphql';
+import InputMask from 'react-input-mask';
 
 interface Formulario {
     name: string;
     email: string;
     password: string;
+    CPF: string;
 }
 
 export const FormPage = () => {
@@ -19,13 +18,16 @@ export const FormPage = () => {
         name: "",
         email: "",
         password: "",
+        CPF: ""
     });
 
-    console.log({ formState});
+    const onSend = (e) => {
+        e.preventDefault();
+    }
 
     return (
         <div className="container mt-5">
-            <form>
+            <form onSubmit={onSend}>
                 <div className="titulo_Form">
                     <h1>Formulário</h1>
                 </div>
@@ -41,7 +43,7 @@ export const FormPage = () => {
                     onChange={(event) =>
                         setFormState({
                             ...formState,
-                            name: event.currentTarget?.value || "",
+                            name: event.currentTarget?.value || "teste",
                         })}
                     />
                 </div>
@@ -83,14 +85,33 @@ export const FormPage = () => {
                 <div className="CPF">
                 <label htmlFor="CPF" 
                     className="form-label">CPF</label>
-                    <MaskedInput/>
+                    <InputMask
+                        className='form-control' 
+                        mask="999.999.999-99"
+                        id="CPF"
+                        required
+                        value={formState.CPF}
+                        onChange={(event) =>
+                        setFormState({
+                            ...formState,
+                            CPF: event.currentTarget?.value || "",
+                        })}
+                    />     
                 </div>
+
 
                 <div className="select">
                     <CountrySelect/>
                 </div>
                 
-                <button type="submit" className="btn btn-primary">Enviar</button>
+                <button
+                    //type="submit"
+                    className="btn btn-primary"
+                    onClick={()=>console.log(formState)}>
+                    
+                    Enviar
+                
+                </button>
                  
             </form>
             
@@ -99,4 +120,3 @@ export const FormPage = () => {
     );
    
 }
-

@@ -1,7 +1,7 @@
-import { Routes } from './routes';
+import { Rotas } from './routes';
 
 export const App = () => {
     return (
-        <Routes/>
+        <Rotas/>
     );
 };

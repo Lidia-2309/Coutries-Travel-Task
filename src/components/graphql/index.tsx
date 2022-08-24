@@ -27,19 +27,24 @@ const CountrySelect = () => {
   }
 
   return (
-    <select value={continent} onChange={event => setContinent(event.target.value)}>
-      {data.continents.map(continent => (
+    <select value={continent} 
+        onChange={event => 
+            setContinent(event.target.value)}>
+        {data.continents.map(continent => (
+        
         <option key={continent.name} value={continent.name}>
           {continent.name}
           {continent.code}
         </option>
+
+        
+
       ))}
     </select>
   );
 }
 
 export default CountrySelect;
-
 
 
 /*  
