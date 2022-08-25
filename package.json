@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@tanstack/react-table": "^8.5.11",
+    "@tanstack/solid-table": "^8.5.11",
+    "@tanstack/svelte-table": "^8.5.11",
+    "@tanstack/table-core": "^8.5.11",
+    "@tanstack/vue-table": "^8.5.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
