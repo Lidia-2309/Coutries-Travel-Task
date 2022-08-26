@@ -20,7 +20,7 @@ const LIST_CONTINENTS = gql`
 // create a component that renders a select input for coutries
 export const Select = () => {
     const { data, loading, error } = useQuery(LIST_CONTINENTS, { client });
-    const [ show, setShow ] = useState(true);
+    const [ show, setShow ] = useState(false);
 
     if (loading || error) {
         return <p>{error ? error.message : 'Loading...'}</p>;
@@ -29,12 +29,12 @@ export const Select = () => {
     return (
         <div className='nations'> 
             { show && <p>
-                {data.countries.map(countries => (
+                    {data.countries.map(countries => (
                     <option key={countries.name} value={countries.name}>
                         {countries.name}
                         {countries.code}
                    </option>
-                  ))}
+                    ))}
               </p>
             }
           <button   
