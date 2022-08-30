@@ -72,7 +72,7 @@ export const FormPage = () => {
                         onChange={(event) =>
                             setFormState({
                                 ...formState,
-                                name: event.currentTarget?.value || "teste",
+                                name: event.currentTarget?.value || "",
                             })}
                     />
                 </div>
@@ -129,7 +129,7 @@ export const FormPage = () => {
                 </div>
 
                 <div className="select">
-                    <CountrySelect />
+                    <CountrySelect/>
                 </div>
 
                 <button
