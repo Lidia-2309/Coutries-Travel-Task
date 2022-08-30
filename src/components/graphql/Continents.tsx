@@ -25,11 +25,12 @@ const CountrySelect = () => {
         return <p>{error ? error.message : 'Loading...'}</p>;
     }
  
-
     return (
         <select value={continent}
-            onChange={event =>
-                setContinent(event.target.value)
+            onChange={(event) => {
+                    console.log(event.target.value)
+                    setContinent(event.target.value)
+                }
             }>
             {data.continents.map(continent => (
                 <option key={continent.name} value={continent.name}>
