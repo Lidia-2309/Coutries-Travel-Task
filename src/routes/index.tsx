@@ -1,10 +1,9 @@
 import { BrowserRouter, Route, Routes, Link, useParams, useLocation } from 'react-router-dom';
-import { useRoutes } from "react-router-dom";
 import { Home } from '../pages/Home';
 import { FormPage } from '../pages/Formulario';
-import { useState } from 'react';
 import { Select } from '../pages/Lista_Paises/nacoes';
 import PAISESSELECAO from '../pages/Teste/teste';
+
 
 
 export const Rotas = () => {
@@ -16,7 +15,6 @@ export const Rotas = () => {
                 <Route path='/form' element={<FormPage />} />
                 <Route path='/paises' element={<Select />} />
                 <Route path='/teste' element={<PAISESSELECAO />} />
-                
             </Routes>
         </BrowserRouter>
     );
