@@ -9,7 +9,7 @@ export const COLUMNS: any[] = [
     },
     {
         Header: 'Moeda',
-        accessor: 'country.code'
+        accessor: 'currency'
     },
 
 ]

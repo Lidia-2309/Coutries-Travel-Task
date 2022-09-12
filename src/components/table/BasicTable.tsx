@@ -9,7 +9,8 @@ import { useLocation } from "react-router-dom";
 export const BasicTable = () => {
     const location =  useLocation() as any;
     const columns = useMemo(() => COLUMNS,[])
-    const data = useMemo(()=> MOCK_DATA,[])
+    //const data = useMemo(()=> MOCK_DATA,[])
+    const data = useMemo(()=> location.state.data.continent.countries,[])
 
     const tableInstance = useTable({
         columns,
@@ -23,7 +24,7 @@ export const BasicTable = () => {
         prepareRow,
     } = tableInstance
 
-    useEffect(()=>{console.log(location.state.data.continent)},[location])
+    useEffect(()=>{console.log(location.state.data.continent.countries)},[location])
 
     return (
         <table {...getTableProps()}>
