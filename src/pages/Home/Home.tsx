@@ -1,7 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './home.css'
 
+
+
 export const Home = () => {
+    const navigate = useNavigate();
     return (
         <div>
             <h1>Seja Bem-Vindo</h1>
@@ -9,14 +12,11 @@ export const Home = () => {
             <div className="div-button">
                 <button
                     className="button"
-                    onClick={refreshPage}>
-                    <Link className="text" to='/form'>IR PARA FORMULARIO</Link>
+                    onClick={() => navigate("/form")}>
+                    IR PARA FORMULARIO
                 </button>
             </div>
         </div>
     );
 };
 
-function refreshPage() {
-    window.location.reload();
-}

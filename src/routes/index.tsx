@@ -15,7 +15,9 @@ export const Rotas = () => {
                 <Route path='/form' element={<FormPage />} />
                 <Route path='/paises' element={<Select />} />
                 <Route path='/teste' element={<PAISESSELECAO />} />
-                <Route path='/table' element={<BasicTable/>} />
+                <Route path='/table' element={<BasicTable/>} 
+                
+                />
             </Routes>
         </BrowserRouter>
     );

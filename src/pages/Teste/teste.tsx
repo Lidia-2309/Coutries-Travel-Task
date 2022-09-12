@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
+import { Link, useNavigate } from 'react-router-dom'
 
 // initialize a GraphQL client
 const client = new ApolloClient({
@@ -33,6 +34,7 @@ const FILTRO = gql`
 // create a component that renders a select input for coutries
 export const PAISESSELECAO = () => {
 
+    const navigate = useNavigate();
     const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
     const [continent, setContinent] = useState('');
     const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
@@ -62,6 +64,14 @@ export const PAISESSELECAO = () => {
             </select>
 
             <button 
+                onClick={() => navigate("/table", {state: {data: data}})
+                
+                }>
+                    NAVIGATE
+                    
+            </button>
+
+            <button 
                     onClick={() =>
                     executeSearch({
                     variables: { code: continent }
@@ -73,11 +83,15 @@ export const PAISESSELECAO = () => {
             {data && data.continent.countries.map(countries => (
                 <option key={countries.name} value={countries.name}>
                     {countries.name}
-                    {countries.code}             
+                    {countries.code} 
+                    {countries.currency}            
                 </option>   
             
             ))}
+
         </div>
+
+
     );
 }
 

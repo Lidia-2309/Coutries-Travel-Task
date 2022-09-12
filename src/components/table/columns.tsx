@@ -1,18 +1,15 @@
 export const COLUMNS: any[] = [
     {
-        Header: 'Id',
-        accessor: 'id'
+        Header: 'Code',
+        accessor: 'code'
     },
     {
-        Header: 'First Name',
-        accessor: 'first_name'
+        Header: 'Paises',
+        accessor: 'name'
     },
     {
-        Header: 'Last Name',
-        accessor: 'last_name'
+        Header: 'Moeda',
+        accessor: 'country.code'
     },
-    {
-        Header: 'Email',
-        accessor: 'email'
-    },
+
 ]

@@ -1,12 +1,12 @@
 [{
-    "id":1, "first_name":"Harrison", "last_name":"Sperrett", "email":"lalala@gmailcom"
+    "code":1, "name":"Harrison", "currency":"Sperrett"
 },
  
 {
-    "id":2, "first_name":"Lidia", "last_name":"Sperrett", "email":"lilili@gmailcom"
+    "code":2, "name":"Lcodeia", "currency":"Sperrett"
 },
 
 {
-    "id":3, "first_name":"Leticia", "last_name":"Sperrett", "email":"lelele@gmailcom"
+    "code":3, "name":"Leticia", "currency":"Sperrett"
 }
 ]

@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useTable } from "react-table";
 import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from "./columns";
 import './table.css'
-
+import { ApolloClient, InMemoryCache, gql, useQuery } from '@apollo/client';
+import { useLocation } from "react-router-dom";
 
 export const BasicTable = () => {
-
+    const location =  useLocation() as any;
     const columns = useMemo(() => COLUMNS,[])
     const data = useMemo(()=> MOCK_DATA,[])
 
@@ -21,6 +22,8 @@ export const BasicTable = () => {
         rows,
         prepareRow,
     } = tableInstance
+
+    useEffect(()=>{console.log(location.state.data.continent)},[location])
 
     return (
         <table {...getTableProps()}>
