@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // initialize a GraphQL client
 const client = new ApolloClient({
@@ -80,14 +80,14 @@ export const PAISESSELECAO = () => {
                 OK
             </button>
 
-            {data && data.continent.countries.map(countries => (
+            {/* {data && data.continent.countries.map(countries => (
                 <option key={countries.name} value={countries.name}>
                     {countries.name}
                     {countries.code} 
                     {countries.currency}            
                 </option>   
             
-            ))}
+            ))} */}
 
         </div>
 

@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask';
 import CountrySelect from '../../components/graphql/Continents';
 import { Link } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, gql, useQuery } from '@apollo/client';
+import { useNavigate } from 'react-router-dom'
 
 
 //____________________________________________________________
@@ -40,6 +41,7 @@ export const FormPage = () => {
 
     const { data } = useQuery(LIST_CONTINENTS, { client });
     const [show, setShow] = useState(true);
+    const navigate = useNavigate();
 
     //USESTATE
 
@@ -139,6 +141,15 @@ export const FormPage = () => {
 
                     Enviar
 
+                </button>
+
+                <button
+
+                    className="btn btn-primary"
+                    onClick={() => navigate("/teste", {state: formState})}>
+
+                    Seleção de Paises
+                    
                 </button>
 
                 {/* <div className='nations'>
