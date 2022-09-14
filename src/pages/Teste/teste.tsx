@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
+import Modal from '../../components/Modal/Modal';
 
 // initialize a GraphQL client
 const client = new ApolloClient({
@@ -34,6 +35,7 @@ const FILTRO = gql`
 // create a component that renders a select input for coutries
 export const PAISESSELECAO = () => {
 
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
     const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
     const [continent, setContinent] = useState('');
@@ -50,28 +52,23 @@ export const PAISESSELECAO = () => {
                     console.log(item);
                 })
             }
-            <select value={continent}
-            onChange={(event) => {
-                    setContinent(event.target.value)
-                }
-            }>
-            {dataContinent.continents.map(continent => (
-                <option key={continent.code} value={continent.code}>
-                    {continent.name}
-                </option>   
-            ))}
-            
-            </select>
-
-            <button 
-                onClick={() => navigate("/table", {state: {data: data}})
-                
+            <div>
+                <select value={continent}
+                onChange={(event) => {
+                        setContinent(event.target.value)
+                    }
                 }>
-                    NAVIGATE
-                    
-            </button>
+                {dataContinent.continents.map(continent => (
+                    <option key={continent.code} value={continent.code}>
+                        {continent.name}
+                    </option>   
+                ))}
+                
+                </select>
+            </div>
 
             <button 
+                    className="btn btn-primary"
                     onClick={() =>
                     executeSearch({
                     variables: { code: continent }
@@ -79,6 +76,26 @@ export const PAISESSELECAO = () => {
             }>
                 OK
             </button>
+
+            <button 
+                className="btn btn-primary"
+                onClick={() => navigate("/table", {state: {data: data}})
+                
+                }>
+                    NAVIGATE
+                    
+            </button>
+
+            <button
+                className="openModalBtn"
+                onClick={() => {
+                setModalOpen(true);
+                }}
+            >
+                Open
+            </button>
+
+            {modalOpen && <Modal setOpenModal={setModalOpen} />}
 
             {/* {data && data.continent.countries.map(countries => (
                 <option key={countries.name} value={countries.name}>

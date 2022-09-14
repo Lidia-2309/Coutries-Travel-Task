@@ -3,8 +3,10 @@ import './PageForm.css'
 import InputMask from 'react-input-mask';
 import CountrySelect from '../../components/graphql/Continents';
 import { Link } from 'react-router-dom'
-import { ApolloClient, InMemoryCache, gql, useQuery } from '@apollo/client';
+import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
+import Modal from '../../components/Modal/Modal';
+import PAISESSELECAO from '../Teste/teste';
 
 
 //____________________________________________________________
@@ -15,14 +17,26 @@ const client = new ApolloClient({
     uri: 'https://countries.trevorblades.com'
 });
 
-// write a GraphQL query that asks for names and codes for all countries
 const LIST_CONTINENTS = gql`
   {
-    countries {
-        name
+        continents{
+          name
+          code
+        }
+  }
+`;
+
+const FILTRO = gql`
+    query PegarUmContinente ($code: ID!){
+        continent(code: $code) {
+        code
+        countries {
+            code
+            name
+            currency
+        }
+        }
     }
-}
- 
 `;
 
 //________________________________________________//
@@ -39,7 +53,10 @@ interface Formulario {
 
 export const FormPage = () => {
 
-    const { data } = useQuery(LIST_CONTINENTS, { client });
+    const [modalOpen, setModalOpen] = useState(false);
+    const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
+    const [continent, setContinent] = useState('');
+    const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
     const [show, setShow] = useState(true);
     const navigate = useNavigate();
 
@@ -131,7 +148,7 @@ export const FormPage = () => {
                 </div>
 
                 <div className="select">
-                    <CountrySelect/>
+                    <PAISESSELECAO/>
                 </div>
 
                 <button
@@ -139,18 +156,10 @@ export const FormPage = () => {
                     className="btn btn-primary"
                     onClick={() => console.log(formState)}>
 
-                    Enviar
+                    Informações Formulário
 
                 </button>
 
-                <button
-
-                    className="btn btn-primary"
-                    onClick={() => navigate("/teste", {state: formState})}>
-
-                    Seleção de Paises
-                    
-                </button>
 
                 {/* <div className='nations'>
                     {show && <p>
@@ -179,4 +188,5 @@ export const FormPage = () => {
 
 }
 
-//console.log(formState)
+
+// create a component that renders a select input for coutries
