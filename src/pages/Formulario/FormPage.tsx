@@ -1,11 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './PageForm.css'
 import InputMask from 'react-input-mask';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
 import {client, LIST_CONTINENTS, FILTRO} from '../../components/graphql' 
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup';
 
-
+const validationPost = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().required(),
+    password: yup.string().required(),
+    CPF: yup.string().required(),
+})
 interface Formulario {
     name: string;
     email: string;
@@ -13,18 +20,14 @@ interface Formulario {
     CPF: string;
 }
 
-
-
 export const FormPage = () => {
-
-
-    const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
-    const [continent, setContinent] = useState('');
+    //yupResolver(validationPost)
+    const { data: dataContinent, loading, error,refetch } = useQuery(LIST_CONTINENTS, { client });
+    const [continent, setContinent] = useState('AF'); 
     const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
     const navigate = useNavigate();
 
     //USESTATE
-
     const [formState, setFormState] = useState<Formulario>({
         name: "",
         email: "",
@@ -40,12 +43,20 @@ export const FormPage = () => {
         e.preventDefault();
     }
 
+    useEffect(()=>{ 
+        executeSearch({variables: { code: continent }}) 
+        refetch(); 
+    },[])
+
     if (loading || error) {
         return <p>{error ? error.message : 'Loading...'}</p>;
     }
+  
+
     return (
         <div className="container mt-5">
-            <form onSubmit={onSend}>
+            <form onSubmit={onSend} >
+            
                 <div className="titulo_Form">
                     <h1>Formulário</h1>
                 </div>
@@ -57,7 +68,7 @@ export const FormPage = () => {
                         className="form-control"
                         id="name"
                         name="name"
-                        required
+                        // //required
                         value={formState.name}
                         onChange={(event) =>
                             setFormState({
@@ -65,6 +76,7 @@ export const FormPage = () => {
                                 name: event.currentTarget?.value || "",
                             })}
                     />
+                    <p className="error-message">{error}</p>
                 </div>
 
                 <div className="mb-3">
@@ -74,7 +86,7 @@ export const FormPage = () => {
                         className="form-control"
                         id="email"
                         aria-describedby="emailHelp"
-                        required
+                        //required
                         value={formState.email}
                         onChange={(event) =>
                             setFormState({
@@ -82,6 +94,7 @@ export const FormPage = () => {
                                 email: event.currentTarget?.value || "",
                             })}
                     />
+                     <p className="error-message">{error}</p>
                 </div>
 
                 <div className="mb-3">
@@ -90,7 +103,7 @@ export const FormPage = () => {
                     <input type="password"
                         className="form-control"
                         id="password"
-                        required
+                        //required
                         value={formState.password}
                         onChange={(event) =>
                             setFormState({
@@ -98,7 +111,7 @@ export const FormPage = () => {
                                 password: event.currentTarget?.value || "",
                             })}
                     />
-
+                     <p className="error-message">{error}</p>
                 </div>
 
                 <div className="CPF">
@@ -108,7 +121,7 @@ export const FormPage = () => {
                         className='form-control'
                         mask="999.999.999-99"
                         id="CPF"
-                        required
+                        //required
                         value={formState.CPF}
                         onChange={(event) =>
                             setFormState({
@@ -117,8 +130,9 @@ export const FormPage = () => {
                             })}
                     />
                 </div>
-                
+                <p className="error-message">{error}</p>
             <div>
+                
                 <select value={continent}
                 onChange={(event) => {
                         setContinent(event.target.value)
@@ -132,14 +146,12 @@ export const FormPage = () => {
                 })}>
                     
                 {dataContinent.continents.map(continent => (
-                    <option key={continent.code} value={continent.code}  >
-                        {continent.name}
-                        
+                    <option key={continent.code} value={continent.code} >
+                        {continent.name}           
                     </option>   
-                    
                 ))}
-                
                 </select>
+                <p className="error-message">{error}</p>
             </div>
 
             <button 
