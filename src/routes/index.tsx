@@ -10,8 +10,8 @@ export const Rotas = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/form' element={<FormPage />} />
-                <Route path='/table' element={<BasicTable/>} />
+                <Route path='/cadastro' element={<FormPage />} />
+                <Route path='//destinos' element={<BasicTable/>} />
           <Route path='/fim' element={<Agradecimento/>} /> 
                 
             </Routes>

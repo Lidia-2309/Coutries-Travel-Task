@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 
 
-export function Modal({ setOpenModal, nome, CPF }) {
+export function Modal({ setOpenModal, nome, CPF, pais }) {
     const navigate = useNavigate();
   return (
     <div className="modalBackground">
@@ -24,7 +24,7 @@ export function Modal({ setOpenModal, nome, CPF }) {
         <div className="body">
         <h4>Nome: {nome}</h4>
             <h4>CPF: {CPF}</h4>
-            <h4>País de Destino: </h4>
+            <h4>País de Destino: {pais} </h4>
         </div>
         <div className="footer">
           <button

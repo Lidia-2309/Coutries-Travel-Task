@@ -1,19 +1,9 @@
 import React, { useState } from 'react'
 import './PageForm.css'
 import InputMask from 'react-input-mask';
-import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
-import Modal from '../../components/Modal/Modal';
 import {client, LIST_CONTINENTS, FILTRO} from '../../components/graphql' 
-
-   
-     
-   
-
-
-
-//____________________________________________________________
-
 
 
 interface Formulario {
@@ -28,17 +18,9 @@ interface Formulario {
 export const FormPage = () => {
 
 
-     
-    const [modalOpen, setModalOpen] = useState(false);
-    const navigateN = useNavigate();
     const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
     const [continent, setContinent] = useState('');
     const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
-
-
-
-
-
     const navigate = useNavigate();
 
     //USESTATE
@@ -57,11 +39,6 @@ export const FormPage = () => {
         console.log(dataD);
         e.preventDefault();
     }
-
-
-
-    const nome = "Lidia"
- 
 
     if (loading || error) {
         return <p>{error ? error.message : 'Loading...'}</p>;
@@ -146,33 +123,32 @@ export const FormPage = () => {
                 onChange={(event) => {
                         setContinent(event.target.value)
                     }
-                }>
+                
+                }
+
+                onClick={() =>
+                    executeSearch({
+                    variables: { code: continent }
+                })}>
+                    
                 {dataContinent.continents.map(continent => (
-                    <option key={continent.code} value={continent.code}>
+                    <option key={continent.code} value={continent.code}  >
                         {continent.name}
+                        
                     </option>   
+                    
                 ))}
                 
                 </select>
             </div>
 
             <button 
-                    className="btn btn-primary"
-                    onClick={() =>
-                    executeSearch({
-                    variables: { code: continent }
-                })
-            }>
-                OK
-            </button>
-
-            <button 
                 className="btn btn-primary"
                 onClick={() => {
-                    navigate("/table", {state: {data: data, name:formState.name, cpf:formState.CPF} })
+                    navigate("/destinos", {state: {data: data, name:formState.name, cpf:formState.CPF} })
                     }             
                 }>
-                    NAVIGATE
+                    Escolher País
                     
             </button>
                     

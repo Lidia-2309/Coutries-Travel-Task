@@ -23,7 +23,7 @@ export const BasicTable = () => {
     const data = useMemo(()=> location.state.data.continent.countries,[])
     const nome = location.state.name
     const CPF = location.state.cpf
-    //const name = location.state.formState.name 
+    const [pais, setpais] = useState()
 
     const tableInstance = useTable({
         columns,
@@ -56,12 +56,13 @@ export const BasicTable = () => {
                 {
                     rows.map(row=>{
                         prepareRow(row)
+                        
                         return(
                             <tr className="openModalBtn" {...row.getRowProps()} 
-                            onClick={() => {handleShow(row.original); console.log(row.original)}  }
-                                
+                            onClick={() => {handleShow(row.original); setpais(row.values.name)}  }
+                            
                             >
-                                 {modalOpen && <Modal setOpenModal={handleShow} nome={nome} CPF= {CPF} />}
+                                 {modalOpen && <Modal setOpenModal={handleShow} nome={nome} CPF= {CPF} pais={row.values.name}/>}
 
                                 {row.cells.map((cell)=>{
                                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
@@ -87,7 +88,7 @@ export const BasicTable = () => {
 
             </div>
 
-            {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF= {CPF}/>}
+            {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF={CPF} pais={pais}/>}
         
         </table>
     )

@@ -12,7 +12,7 @@ export const Home = () => {
             <div className="div-button">
                 <button
                     className="button"
-                    onClick={() => navigate("/form")}>
+                    onClick={() => navigate("/cadastro")}>
                     IR PARA FORMULARIO
                 </button>
             </div>
