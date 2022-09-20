@@ -1,45 +1,19 @@
 import React, { useState } from 'react'
 import './PageForm.css'
 import InputMask from 'react-input-mask';
-import CountrySelect from '../../components/graphql/Continents';
-import { Link } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, gql, useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
 import Modal from '../../components/Modal/Modal';
-import PAISESSELECAO from '../Teste/teste';
+import {client, LIST_CONTINENTS, FILTRO} from '../../components/graphql' 
+
+   
+     
+   
+
 
 
 //____________________________________________________________
 
-// initialize a GraphQL client
-const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    uri: 'https://countries.trevorblades.com'
-});
-
-const LIST_CONTINENTS = gql`
-  {
-        continents{
-          name
-          code
-        }
-  }
-`;
-
-const FILTRO = gql`
-    query PegarUmContinente ($code: ID!){
-        continent(code: $code) {
-        code
-        countries {
-            code
-            name
-            currency
-        }
-        }
-    }
-`;
-
-//________________________________________________//
 
 
 interface Formulario {
@@ -53,11 +27,18 @@ interface Formulario {
 
 export const FormPage = () => {
 
+
+     
     const [modalOpen, setModalOpen] = useState(false);
+    const navigateN = useNavigate();
     const { data: dataContinent, loading, error } = useQuery(LIST_CONTINENTS, { client });
     const [continent, setContinent] = useState('');
     const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
-    const [show, setShow] = useState(true);
+
+
+
+
+
     const navigate = useNavigate();
 
     //USESTATE
@@ -70,9 +51,21 @@ export const FormPage = () => {
     });
 
     const onSend = (e) => {
+        const dataD ={
+            formState,
+        }
+        console.log(dataD);
         e.preventDefault();
     }
 
+
+
+    const nome = "Lidia"
+ 
+
+    if (loading || error) {
+        return <p>{error ? error.message : 'Loading...'}</p>;
+    }
     return (
         <div className="container mt-5">
             <form onSubmit={onSend}>
@@ -86,6 +79,7 @@ export const FormPage = () => {
                     <input type="text"
                         className="form-control"
                         id="name"
+                        name="name"
                         required
                         value={formState.name}
                         onChange={(event) =>
@@ -146,40 +140,43 @@ export const FormPage = () => {
                             })}
                     />
                 </div>
-
-                <div className="select">
-                    <PAISESSELECAO/>
-                </div>
-
-                <button
-
-                    className="btn btn-primary"
-                    onClick={() => console.log(formState)}>
-
-                    Informações Formulário
-
-                </button>
-
-
-                {/* <div className='nations'>
-                    {show && <p>
-                        {data.countries.map(countries => (
-                            <option key={countries.name} value={countries.name}>
-                                {countries.name}
-                                {countries.code}
-                            </option>
-                        ))}
-                    </p>
+                
+            <div>
+                <select value={continent}
+                onChange={(event) => {
+                        setContinent(event.target.value)
                     }
-                    <button
-                        type="button"
-                        className="button"
-                        onClick={() => setShow(!show)}>
-                        Paises
-                    </button>
-                </div> */}
+                }>
+                {dataContinent.continents.map(continent => (
+                    <option key={continent.code} value={continent.code}>
+                        {continent.name}
+                    </option>   
+                ))}
+                
+                </select>
+            </div>
 
+            <button 
+                    className="btn btn-primary"
+                    onClick={() =>
+                    executeSearch({
+                    variables: { code: continent }
+                })
+            }>
+                OK
+            </button>
 
+            <button 
+                className="btn btn-primary"
+                onClick={() => {
+                    navigate("/table", {state: {data: data, name:formState.name, cpf:formState.CPF} })
+                    }             
+                }>
+                    NAVIGATE
+                    
+            </button>
+                    
+            
             </form>
 
         </div>
@@ -189,4 +186,3 @@ export const FormPage = () => {
 }
 
 
-// create a component that renders a select input for coutries

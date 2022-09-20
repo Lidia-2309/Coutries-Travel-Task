@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Modal.css";
 
-export function Modal({ setOpenModal }) {
+
+export function Modal({ setOpenModal, nome, CPF }) {
+    const navigate = useNavigate();
   return (
     <div className="modalBackground">
       <div className="modalContainer">
@@ -15,10 +18,13 @@ export function Modal({ setOpenModal }) {
           </button>
         </div>
         <div className="title">
-
+            <h1>Você confirma o vôo?</h1>
+            
         </div>
         <div className="body">
-
+        <h4>Nome: {nome}</h4>
+            <h4>CPF: {CPF}</h4>
+            <h4>País de Destino: </h4>
         </div>
         <div className="footer">
           <button
@@ -29,8 +35,11 @@ export function Modal({ setOpenModal }) {
           >
             Cancelar
           </button>
-          <button className="btn btn-primary">
-            
+          <button className="btn btn-primary"
+            onClick={()=> {
+                navigate("/fim")
+            }}
+          >
             Confirmar
             
             </button>

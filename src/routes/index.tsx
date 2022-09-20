@@ -1,10 +1,8 @@
 import { BrowserRouter, Route, Routes, Link, useParams, useLocation } from 'react-router-dom';
 import { Home } from '../pages/Home';
 import { FormPage } from '../pages/Formulario';
-import { Select } from '../pages/Lista_Paises/nacoes';
-import PAISESSELECAO from '../pages/Teste/teste';
 import BasicTable from '../components/table/BasicTable';
-
+import Agradecimento from '../pages/Agradecimento/agradecimento';
 
 export const Rotas = () => {
 
@@ -13,11 +11,9 @@ export const Rotas = () => {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/form' element={<FormPage />} />
-                <Route path='/paises' element={<Select />} />
-                <Route path='/teste' element={<PAISESSELECAO />} />
-                <Route path='/table' element={<BasicTable/>} 
+                <Route path='/table' element={<BasicTable/>} />
+          <Route path='/fim' element={<Agradecimento/>} /> 
                 
-                />
             </Routes>
         </BrowserRouter>
     );

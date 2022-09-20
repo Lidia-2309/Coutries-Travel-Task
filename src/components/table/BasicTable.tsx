@@ -3,17 +3,27 @@ import { useTable } from "react-table";
 import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from "./columns";
 import './table.css'
-import { ApolloClient, InMemoryCache, gql, useQuery } from '@apollo/client';
 import { useLocation } from "react-router-dom";
 import Modal from '../../components/Modal/Modal';
 
 
 export const BasicTable = () => {
+
+    
     const [modalOpen, setModalOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState({});
+    
+    const handleShow = (selected) => {
+      setSelectedRow(selected);
+      setModalOpen(true);
+      };
+   
     const location =  useLocation() as any;
     const columns = useMemo(() => COLUMNS,[])
-    //const data = useMemo(()=> MOCK_DATA,[])
     const data = useMemo(()=> location.state.data.continent.countries,[])
+    const nome = location.state.name
+    const CPF = location.state.cpf
+    //const name = location.state.formState.name 
 
     const tableInstance = useTable({
         columns,
@@ -27,7 +37,7 @@ export const BasicTable = () => {
         prepareRow,
     } = tableInstance
 
-    useEffect(()=>{console.log(location.state.data.continent.countries)},[location])
+   /*  useEffect(()=>{console.log(location.state.data.continent.countries)},[location]) */
 
     return (
         <table {...getTableProps()}>
@@ -48,13 +58,10 @@ export const BasicTable = () => {
                         prepareRow(row)
                         return(
                             <tr className="openModalBtn" {...row.getRowProps()} 
-                            onClick={() => {
-                                setModalOpen(true);
-                                console.log(row.original)
-                                }}
+                            onClick={() => {handleShow(row.original); console.log(row.original)}  }
                                 
                             >
-                                 {modalOpen && <Modal setOpenModal={setModalOpen} />}
+                                 {modalOpen && <Modal setOpenModal={handleShow} nome={nome} CPF= {CPF} />}
 
                                 {row.cells.map((cell)=>{
                                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
@@ -77,10 +84,10 @@ export const BasicTable = () => {
                 setModalOpen(true);
                 }}
             >
-                Open
+
             </div>
 
-            {modalOpen && <Modal setOpenModal={setModalOpen} />}
+            {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF= {CPF}/>}
         
         </table>
     )
