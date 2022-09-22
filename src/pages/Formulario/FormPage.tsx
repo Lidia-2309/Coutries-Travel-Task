@@ -3,16 +3,11 @@ import './PageForm.css'
 import InputMask from 'react-input-mask';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom'
-import {client, LIST_CONTINENTS, FILTRO} from '../../components/graphql' 
-import { yupResolver } from '@hookform/resolvers/yup'
+import { client, LIST_CONTINENTS, FILTRO } from '../../components/graphql'
 import * as yup from 'yup';
-
-const validationPost = yup.object().shape({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    password: yup.string().required(),
-    CPF: yup.string().required(),
-})
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from "react-hook-form";
+import {InputErrorNome,  InputErrorEmail, InputErrorPassword, InputErrorCPF } from "../../pages/Formulario/InputError"
 interface Formulario {
     name: string;
     email: string;
@@ -20,11 +15,24 @@ interface Formulario {
     CPF: string;
 }
 
+const userSchema = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+    CPF: yup.string().required(),
+})
+
+
 export const FormPage = () => {
-    //yupResolver(validationPost)
-    const { data: dataContinent, loading, error,refetch } = useQuery(LIST_CONTINENTS, { client });
-    const [continent, setContinent] = useState('AF'); 
-    const [executeSearch,{data}] = useLazyQuery(FILTRO, {client});
+
+    const { register, handleSubmit, formState: { errors } } = useForm<Formulario>({
+        resolver: yupResolver(userSchema),
+    });
+
+
+    const { data: dataContinent, loading, error, refetch } = useQuery(LIST_CONTINENTS, { client });
+    const [continent, setContinent] = useState('AF');
+    const [executeSearch, { data }] = useLazyQuery(FILTRO, { client });
     const navigate = useNavigate();
 
     //USESTATE
@@ -35,28 +43,29 @@ export const FormPage = () => {
         CPF: ""
     });
 
-    const onSend = (e) => {
-        const dataD ={
+    const onSend = async (e) => {
+        const dataD = {
             formState,
-        }
-        console.log(dataD);
+        };
+        /* const isValid = await userSchema.isValid(formState);
+        console.log(isValid); */
         e.preventDefault();
     }
 
-    useEffect(()=>{ 
-        executeSearch({variables: { code: continent }}) 
-        refetch(); 
-    },[])
+    useEffect(() => {
+        executeSearch({ variables: { code: continent } })
+        refetch();
+    }, [])
 
     if (loading || error) {
         return <p>{error ? error.message : 'Loading...'}</p>;
     }
-  
 
+    const submitForm = (formState) => { console.log(formState) };
+    
     return (
         <div className="container mt-5">
-            <form onSubmit={onSend} >
-            
+            <form onSubmit={handleSubmit(submitForm)}   >
                 <div className="titulo_Form">
                     <h1>Formulário</h1>
                 </div>
@@ -67,16 +76,16 @@ export const FormPage = () => {
                     <input type="text"
                         className="form-control"
                         id="name"
-                        name="name"
-                        // //required
+                        {...register('name', { required: true })}
+                        
                         value={formState.name}
                         onChange={(event) =>
                             setFormState({
                                 ...formState,
                                 name: event.currentTarget?.value || "",
-                            })}
+                            })}      
                     />
-                    <p className="error-message">{error}</p>
+                    {errors.name?.message && <InputErrorNome/>}
                 </div>
 
                 <div className="mb-3">
@@ -86,7 +95,7 @@ export const FormPage = () => {
                         className="form-control"
                         id="email"
                         aria-describedby="emailHelp"
-                        //required
+                        {...register('email', { required: true })}
                         value={formState.email}
                         onChange={(event) =>
                             setFormState({
@@ -94,7 +103,7 @@ export const FormPage = () => {
                                 email: event.currentTarget?.value || "",
                             })}
                     />
-                     <p className="error-message">{error}</p>
+                    {errors.email?.message && <InputErrorEmail/>}
                 </div>
 
                 <div className="mb-3">
@@ -103,7 +112,7 @@ export const FormPage = () => {
                     <input type="password"
                         className="form-control"
                         id="password"
-                        //required
+                        {...register('password', { required: true })}
                         value={formState.password}
                         onChange={(event) =>
                             setFormState({
@@ -111,17 +120,18 @@ export const FormPage = () => {
                                 password: event.currentTarget?.value || "",
                             })}
                     />
-                     <p className="error-message">{error}</p>
+                    {errors.password?.message && <InputErrorPassword/>}
                 </div>
 
                 <div className="CPF">
                     <label htmlFor="CPF"
                         className="form-label">CPF</label>
+
                     <InputMask
                         className='form-control'
                         mask="999.999.999-99"
                         id="CPF"
-                        //required
+                        {...register('CPF', { required: true })}
                         value={formState.CPF}
                         onChange={(event) =>
                             setFormState({
@@ -129,42 +139,46 @@ export const FormPage = () => {
                                 CPF: event.currentTarget?.value || "",
                             })}
                     />
+                    {errors.CPF?.message && <InputErrorCPF/>}
                 </div>
-                <p className="error-message">{error}</p>
-            <div>
-                
-                <select value={continent}
-                onChange={(event) => {
-                        setContinent(event.target.value)
+
+                <div>
+
+                    <select value={continent}
+                        onChange={(event) => {
+                            setContinent(event.target.value)
+                        }
+
+                        }
+
+                        onClick={() =>
+                            executeSearch({
+                                variables: { code: continent }
+                            })}>
+
+                        {dataContinent.continents.map(continent => (
+                            <option key={continent.code} value={continent.code} >
+                                {continent.name}
+                            </option>
+                        ))}
+                    </select>
+                    <p className="error-message">{error}</p>
+                </div>
+                <input type="submit" /> 
+                <div>
+                <button type="submit"
+                    className="btn btn-primary"
+                    onClick={() => {
+                        navigate("/destinos", { state: { data: data, name: formState.name, cpf: formState.CPF } })
                     }
-                
-                }
-
-                onClick={() =>
-                    executeSearch({
-                    variables: { code: continent }
-                })}>
-                    
-                {dataContinent.continents.map(continent => (
-                    <option key={continent.code} value={continent.code} >
-                        {continent.name}           
-                    </option>   
-                ))}
-                </select>
-                <p className="error-message">{error}</p>
-            </div>
-
-            <button 
-                className="btn btn-primary"
-                onClick={() => {
-                    navigate("/destinos", {state: {data: data, name:formState.name, cpf:formState.CPF} })
-                    }             
-                }>
+                    }>
                     Escolher País
-                    
-            </button>
-                    
-            
+
+                </button>
+                </div>
+                
+
+
             </form>
 
         </div>
