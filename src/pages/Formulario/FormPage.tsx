@@ -61,11 +61,26 @@ export const FormPage = () => {
         return <p>{error ? error.message : 'Loading...'}</p>;
     }
 
-    const submitForm = (formState) => { console.log(formState) };
+    function nextStep (){
+        return( 
+            navigate("/destinos", { 
+                state: { 
+                    data: data, 
+                    name: formState.name, 
+                    cpf: formState.CPF 
+                }
+            })
+        )
+    }
+
+    const submitForm = (formState) => { 
+        console.log(formState);
+        nextStep();
+    };
     
     return (
         <div className="container mt-5">
-            <form onSubmit={handleSubmit(submitForm)}   >
+            <form method= "post" onSubmit={handleSubmit(submitForm)}    >
                 <div className="titulo_Form">
                     <h1>Formulário</h1>
                 </div>
@@ -77,7 +92,6 @@ export const FormPage = () => {
                         className="form-control"
                         id="name"
                         {...register('name', { required: true })}
-                        
                         value={formState.name}
                         onChange={(event) =>
                             setFormState({
@@ -163,17 +177,10 @@ export const FormPage = () => {
                         ))}
                     </select>
                     <p className="error-message">{error}</p>
-                </div>
-                <input type="submit" /> 
-                <div>
-                <button type="submit"
-                    className="btn btn-primary"
-                    onClick={() => {
-                        navigate("/destinos", { state: { data: data, name: formState.name, cpf: formState.CPF } })
-                    }
-                    }>
-                    Escolher País
-
+                
+                <button type="submit" 
+                    className="btn btn-primary"   
+                    >Escolher País
                 </button>
                 </div>
                 
