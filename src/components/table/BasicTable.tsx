@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTable } from "react-table";
-import MOCK_DATA from './MOCK_DATA.json'
 import { COLUMNS } from "./columns";
 import './table.css'
 import { useLocation } from "react-router-dom";
@@ -62,7 +61,7 @@ export const BasicTable = () => {
                             onClick={() => {handleShow(row.original); setpais(row.values.name)}  }
                             
                             >
-                                 {modalOpen && <Modal setOpenModal={handleShow} nome={nome} CPF= {CPF} pais={row.values.name}/>}
+                             {/*  {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF= {CPF} pais={pais}/>} */} 
 
                                 {row.cells.map((cell)=>{
                                     return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
@@ -78,17 +77,7 @@ export const BasicTable = () => {
                 </tr>
             </tbody>
             
-            <div
-
-                className="openModalBtn"
-                onClick={() => {
-                setModalOpen(true);
-                }}
-            >
-
-            </div>
-
-            {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF={CPF} pais={pais}/>}
+            {modalOpen && <Modal setOpenModal={setModalOpen} nome={nome} CPF={CPF} pais={pais}/>} 
         
         </table>
     )
@@ -96,5 +85,3 @@ export const BasicTable = () => {
 
 export default BasicTable
 
-
-//onClick={() => console.log(row.original)}
